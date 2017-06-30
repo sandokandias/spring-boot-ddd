@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: io.vavr:vavr:0.9.0">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.vavr/vavr/0.9.0/3dd71b51838f78ae1b606fe0550b3cdd68bdcaf2/vavr-0.9.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.vavr/vavr/0.9.0/8e5183c998de1c0883815629edd0a3092fa4bc80/vavr-0.9.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

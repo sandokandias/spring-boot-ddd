@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ddd-java-sample.iml" filepath="$PROJECT_DIR$/.idea/modules/ddd-java-sample.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ddd-java-sample_main.iml" filepath="$PROJECT_DIR$/.idea/modules/ddd-java-sample_main.iml" group="ddd-java-sample" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ddd-java-sample_test.iml" filepath="$PROJECT_DIR$/.idea/modules/ddd-java-sample_test.iml" group="ddd-java-sample" />
+    </modules>
+  </component>
+</project>

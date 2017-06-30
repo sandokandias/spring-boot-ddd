@@ -1,4 +1,4 @@
-package com.github.sandokandias.payments.domain.entity;
+package com.github.sandokandias.payments.infrastructure.persistence;
 
 
 import com.github.sandokandias.payments.domain.vo.PaymentEventType;
@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @Setter
 @EqualsAndHashCode
 @Entity
-public class PaymentEvent {
+public class PaymentEventTable {
     @Id
     private String id;
     private String paymentId;

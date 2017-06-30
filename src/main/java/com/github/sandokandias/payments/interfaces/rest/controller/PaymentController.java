@@ -1,4 +1,4 @@
-package com.github.sandokandias.payments.interfaces.rest;
+package com.github.sandokandias.payments.interfaces.rest.controller;
 
 import com.github.sandokandias.payments.application.PaymentProcessManager;
 import com.github.sandokandias.payments.domain.command.PerformPayment;
@@ -6,7 +6,7 @@ import com.github.sandokandias.payments.domain.shared.CommandFailure;
 import com.github.sandokandias.payments.domain.vo.AccountId;
 import com.github.sandokandias.payments.domain.vo.IdRepresentation;
 import com.github.sandokandias.payments.domain.vo.PaymentId;
-import com.github.sandokandias.payments.interfaces.request.PerformPaymentRequest;
+import com.github.sandokandias.payments.interfaces.rest.model.PerformPaymentRequest;
 import io.vavr.control.Either;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

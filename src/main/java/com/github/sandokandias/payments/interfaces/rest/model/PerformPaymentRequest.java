@@ -1,4 +1,4 @@
-package com.github.sandokandias.payments.interfaces.request;
+package com.github.sandokandias.payments.interfaces.rest.model;
 
 import com.github.sandokandias.payments.domain.vo.Transaction;
 import lombok.Data;

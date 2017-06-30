@@ -1,7 +1,6 @@
 package com.github.sandokandias.payments.infrastructure.persistence;
 
 
-import com.github.sandokandias.payments.domain.entity.PaymentEvent;
 import com.github.sandokandias.payments.domain.entity.PaymentEventRepository;
 import com.github.sandokandias.payments.domain.event.PaymentRequested;
 import com.github.sandokandias.payments.domain.vo.PaymentEventId;
@@ -33,13 +32,13 @@ class PaymentEventRepositoryImpl implements PaymentEventRepository {
     public CompletionStage<PaymentEventId> store(PaymentRequested paymentRequested) {
         return CompletableFuture.supplyAsync(() -> {
             String eventDataAsJson = jsonMapper.write(paymentRequested);
-            PaymentEvent paymentEvent = new PaymentEvent();
-            paymentEvent.setId(paymentRequested.paymentEventId.id);
-            paymentEvent.setEventType(PaymentEventType.PAYMENT_REQUESTED);
-            paymentEvent.setPaymentId(paymentRequested.paymentId.id);
-            paymentEvent.setCreatedAt(LocalDateTime.now());
-            paymentEvent.setEventData(eventDataAsJson);
-            eventStore.save(paymentEvent);
+            PaymentEventTable paymentEventTable = new PaymentEventTable();
+            paymentEventTable.setId(paymentRequested.paymentEventId.id);
+            paymentEventTable.setEventType(PaymentEventType.PAYMENT_REQUESTED);
+            paymentEventTable.setPaymentId(paymentRequested.paymentId.id);
+            paymentEventTable.setCreatedAt(LocalDateTime.now());
+            paymentEventTable.setEventData(eventDataAsJson);
+            eventStore.save(paymentEventTable);
             return paymentRequested.paymentEventId;
         }, pool);
     }

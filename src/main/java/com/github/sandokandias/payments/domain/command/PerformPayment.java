@@ -1,6 +1,5 @@
 package com.github.sandokandias.payments.domain.command;
 
-import com.github.sandokandias.payments.domain.shared.Command;
 import com.github.sandokandias.payments.domain.vo.AccountId;
 import com.github.sandokandias.payments.domain.vo.PaymentIntent;
 import com.github.sandokandias.payments.domain.vo.PaymentMethod;
@@ -11,7 +10,7 @@ import lombok.AllArgsConstructor;
 import javax.validation.Valid;
 
 @AllArgsConstructor
-public class PerformPayment implements Command {
+public class PerformPayment implements PaymentCommand {
     @Valid
     public final AccountId accountId;
     @ValidEnum(conformsTo = PaymentIntent.class)
