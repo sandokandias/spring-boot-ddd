@@ -1,0 +1,42 @@
+group 'com.github.sandokandias'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.franzbecker.gradle-lombok'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.8.9'
+    compile 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.8.9'
+    compile 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.8.9'
+    compile 'javax.validation:validation-api:1.1.0.Final'
+    compile('org.springframework.boot:spring-boot-starter-web') {
+        exclude module: 'spring-boot-starter-tomcat'
+    }
+    compile 'org.springframework.boot:spring-boot-starter-data-jpa'
+    compile 'org.springframework.boot:spring-boot-starter-undertow'
+    compile 'mysql:mysql-connector-java'
+    compile "io.vavr:vavr:0.9.0"
+    testCompile 'junit:junit:4.12'
+}
+
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "io.franzbecker:gradle-lombok:1.8"
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:1.5.2.RELEASE"
+    }
+}
+
