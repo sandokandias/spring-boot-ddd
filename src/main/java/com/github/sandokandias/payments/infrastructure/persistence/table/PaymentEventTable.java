@@ -1,4 +1,4 @@
-package com.github.sandokandias.payments.infrastructure.persistence;
+package com.github.sandokandias.payments.infrastructure.persistence.table;
 
 
 import com.github.sandokandias.payments.domain.vo.PaymentEventType;

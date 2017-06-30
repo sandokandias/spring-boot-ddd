@@ -22,16 +22,16 @@ public class Money implements ValueObject<Money> {
     @JsonIgnore
     public final BigDecimal amountAsBigDecimal;
     @NotNull
-    public final Integer precision;
+    public final Integer scale;
 
     @JsonCreator
     public Money(@JsonProperty("currency") String currency,
                  @JsonProperty("amount") Integer amount,
-                 @JsonProperty("precision") Integer precision) {
+                 @JsonProperty("scale") Integer scale) {
         this.currency = Currency.getInstance(currency).getCurrencyCode();
         this.amount = amount;
-        this.precision = precision;
-        this.amountAsBigDecimal = new BigDecimal(amount).movePointLeft(precision);
+        this.scale = scale;
+        this.amountAsBigDecimal = new BigDecimal(amount).movePointLeft(2).setScale(scale);
     }
 
     @Override
@@ -39,6 +39,6 @@ public class Money implements ValueObject<Money> {
         return other != null &&
                 this.currency.equals(other.currency) &&
                 this.amount.equals(other.amount) &&
-                this.precision.equals(other.precision);
+                this.scale.equals(other.scale);
     }
 }

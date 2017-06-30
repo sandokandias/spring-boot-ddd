@@ -1,10 +1,11 @@
-package com.github.sandokandias.payments.infrastructure.persistence;
+package com.github.sandokandias.payments.infrastructure.persistence.repository;
 
 
 import com.github.sandokandias.payments.domain.entity.PaymentEventRepository;
 import com.github.sandokandias.payments.domain.event.PaymentRequested;
 import com.github.sandokandias.payments.domain.vo.PaymentEventId;
 import com.github.sandokandias.payments.domain.vo.PaymentEventType;
+import com.github.sandokandias.payments.infrastructure.persistence.table.PaymentEventTable;
 import com.github.sandokandias.payments.infrastructure.util.serialization.JsonMapper;
 import org.springframework.stereotype.Repository;
 
