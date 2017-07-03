@@ -1,6 +1,7 @@
 package com.github.sandokandias.payments.domain.entity.handler;
 
 import com.github.sandokandias.payments.domain.command.AuthorizePayment;
+import com.github.sandokandias.payments.domain.command.validation.AuthorizePaymentValidator;
 import com.github.sandokandias.payments.domain.entity.PaymentEventRepository;
 import com.github.sandokandias.payments.domain.event.PaymentAuthorized;
 import com.github.sandokandias.payments.domain.shared.CommandFailure;
@@ -22,9 +23,13 @@ public class AuthorizePaymentHandler implements CommandHandler<AuthorizePayment,
     private static final Logger LOG = LoggerFactory.getLogger(AuthorizePaymentHandler.class);
 
     private final PaymentEventRepository paymentEventRepository;
+    private final AuthorizePaymentValidator authorizePaymentValidator;
 
-    public AuthorizePaymentHandler(PaymentEventRepository paymentEventRepository) {
+
+    public AuthorizePaymentHandler(PaymentEventRepository paymentEventRepository,
+                                   AuthorizePaymentValidator authorizePaymentValidator) {
         this.paymentEventRepository = paymentEventRepository;
+        this.authorizePaymentValidator = authorizePaymentValidator;
     }
 
     @Override
@@ -32,7 +37,7 @@ public class AuthorizePaymentHandler implements CommandHandler<AuthorizePayment,
 
         LOG.debug("Handle command {}", command);
 
-        return command.acceptOrReject().fold(
+        return authorizePaymentValidator.acceptOrReject(command).fold(
                 reject -> CompletableFuture.completedFuture(Either.left(reject)),
                 accept -> {
                     PaymentAuthorized event = new PaymentAuthorized(

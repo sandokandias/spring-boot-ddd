@@ -1,6 +1,7 @@
 package com.github.sandokandias.payments.domain.entity.handler;
 
 import com.github.sandokandias.payments.domain.command.PerformPayment;
+import com.github.sandokandias.payments.domain.command.validation.PerformPaymentValidator;
 import com.github.sandokandias.payments.domain.entity.PaymentEventRepository;
 import com.github.sandokandias.payments.domain.event.PaymentRequested;
 import com.github.sandokandias.payments.domain.shared.CommandFailure;
@@ -17,14 +18,18 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 
 @Component
-public class PerformPaymentHandler implements CommandHandler<PerformPayment, PaymentRequested, PaymentId> {
+public class PerformPaymentHandler implements
+        CommandHandler<PerformPayment, PaymentRequested, PaymentId> {
 
     private static final Logger LOG = LoggerFactory.getLogger(PerformPaymentHandler.class);
 
     private final PaymentEventRepository paymentEventRepository;
+    private final PerformPaymentValidator performPaymentValidator;
 
-    PerformPaymentHandler(PaymentEventRepository paymentEventRepository) {
+    PerformPaymentHandler(PaymentEventRepository paymentEventRepository,
+                          PerformPaymentValidator performPaymentValidator) {
         this.paymentEventRepository = paymentEventRepository;
+        this.performPaymentValidator = performPaymentValidator;
     }
 
     @Override
@@ -32,7 +37,7 @@ public class PerformPaymentHandler implements CommandHandler<PerformPayment, Pay
 
         LOG.debug("Handle command {}", command);
 
-        return command.acceptOrReject().fold(
+        return performPaymentValidator.acceptOrReject(command).fold(
                 reject -> CompletableFuture.completedFuture(Either.left(reject)),
                 accept -> {
                     PaymentRequested event = new PaymentRequested(
@@ -49,4 +54,6 @@ public class PerformPaymentHandler implements CommandHandler<PerformPayment, Pay
                 }
         );
     }
+
+
 }
