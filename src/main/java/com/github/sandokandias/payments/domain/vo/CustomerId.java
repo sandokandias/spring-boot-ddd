@@ -2,14 +2,14 @@ package com.github.sandokandias.payments.domain.vo;
 
 import com.github.sandokandias.payments.domain.shared.RandomUUID;
 
-public class AccountId extends RandomUUID {
+public class CustomerId extends RandomUUID {
 
-    public AccountId(String id) {
+    public CustomerId(String id) {
         super(id);
     }
 
     @Override
     protected String getPrefix() {
-        return "ACC-%s";
+        return "CST-%s";
     }
 }

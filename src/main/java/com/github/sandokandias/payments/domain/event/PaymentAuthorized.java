@@ -1,15 +1,16 @@
 package com.github.sandokandias.payments.domain.event;
 
-import com.github.sandokandias.payments.domain.vo.AccountId;
-import com.github.sandokandias.payments.domain.vo.PaymentId;
-import com.github.sandokandias.payments.domain.vo.PaymentMethod;
-import com.github.sandokandias.payments.domain.vo.Transaction;
+import com.github.sandokandias.payments.domain.vo.*;
 import lombok.AllArgsConstructor;
+
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 public class PaymentAuthorized implements PaymentEvent {
+    public final PaymentEventId paymentEventId;
     public final PaymentId paymentId;
-    public final AccountId accountId;
+    public final CustomerId customerId;
     public final PaymentMethod paymentMethod;
     public final Transaction transaction;
+    public final LocalDateTime createdAt;
 }

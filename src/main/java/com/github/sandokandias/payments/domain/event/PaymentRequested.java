@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 public class PaymentRequested implements PaymentEvent {
     public final PaymentEventId paymentEventId;
     public final PaymentId paymentId;
-    public final AccountId accountId;
+    public final CustomerId customerId;
     public final PaymentIntent intent;
     public final PaymentMethod paymentMethod;
     public final Transaction transaction;

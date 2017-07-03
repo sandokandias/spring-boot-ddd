@@ -10,6 +10,9 @@ public class I18nFactory {
         return exception
                 .getConstraintViolations()
                 .stream()
-                .map(c -> new I18nCode(c.getMessage())).collect(Collectors.toSet());
+                .map(c -> new I18nCode(
+                        c.getMessage(),
+                        new Object[]{c.getPropertyPath().iterator().next().getName()}))
+                .collect(Collectors.toSet());
     }
 }

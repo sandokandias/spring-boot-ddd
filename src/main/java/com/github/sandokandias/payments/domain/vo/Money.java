@@ -5,26 +5,27 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.sandokandias.payments.domain.shared.ValueObject;
+import com.github.sandokandias.payments.infrastructure.util.validation.ValidEnum;
 import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.Currency;
 
 @EqualsAndHashCode(exclude = {"amountAsBigDecimal"})
 public class Money implements ValueObject<Money> {
-    @NotNull
-    @Size(min = 3, max = 3)
+
+    @ValidEnum(conformsTo = CurrencyCodes.class)
     public final String currency;
     @NotNull
     public final Integer amount;
-    @JsonIgnore
-    public final BigDecimal amountAsBigDecimal;
     @NotNull
     public final Integer scale;
+    @JsonIgnore
+    public final BigDecimal amountAsBigDecimal;
 
-    @JsonCreator
+
+    @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
     public Money(@JsonProperty("currency") String currency,
                  @JsonProperty("amount") Integer amount,
                  @JsonProperty("scale") Integer scale) {

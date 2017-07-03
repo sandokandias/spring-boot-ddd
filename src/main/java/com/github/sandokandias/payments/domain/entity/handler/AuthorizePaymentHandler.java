@@ -1,8 +1,8 @@
 package com.github.sandokandias.payments.domain.entity.handler;
 
-import com.github.sandokandias.payments.domain.command.PerformPayment;
+import com.github.sandokandias.payments.domain.command.AuthorizePayment;
 import com.github.sandokandias.payments.domain.entity.PaymentEventRepository;
-import com.github.sandokandias.payments.domain.event.PaymentRequested;
+import com.github.sandokandias.payments.domain.event.PaymentAuthorized;
 import com.github.sandokandias.payments.domain.shared.CommandFailure;
 import com.github.sandokandias.payments.domain.shared.CommandHandler;
 import com.github.sandokandias.payments.domain.vo.PaymentEventId;
@@ -17,29 +17,28 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 
 @Component
-public class PerformPaymentHandler implements CommandHandler<PerformPayment, PaymentRequested, PaymentId> {
+public class AuthorizePaymentHandler implements CommandHandler<AuthorizePayment, PaymentAuthorized, PaymentId> {
 
-    private static final Logger LOG = LoggerFactory.getLogger(PerformPaymentHandler.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AuthorizePaymentHandler.class);
 
     private final PaymentEventRepository paymentEventRepository;
 
-    PerformPaymentHandler(PaymentEventRepository paymentEventRepository) {
+    public AuthorizePaymentHandler(PaymentEventRepository paymentEventRepository) {
         this.paymentEventRepository = paymentEventRepository;
     }
 
     @Override
-    public CompletionStage<Either<CommandFailure, PaymentRequested>> handle(PerformPayment command, PaymentId entityId) {
+    public CompletionStage<Either<CommandFailure, PaymentAuthorized>> handle(AuthorizePayment command, PaymentId entityId) {
 
         LOG.debug("Handle command {}", command);
 
         return command.acceptOrReject().fold(
                 reject -> CompletableFuture.completedFuture(Either.left(reject)),
                 accept -> {
-                    PaymentRequested event = new PaymentRequested(
+                    PaymentAuthorized event = new PaymentAuthorized(
                             new PaymentEventId(),
                             entityId,
                             command.customerId,
-                            command.intent,
                             command.paymentMethod,
                             command.transaction,
                             LocalDateTime.now()

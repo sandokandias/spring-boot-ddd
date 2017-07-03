@@ -1,6 +1,8 @@
 package com.github.sandokandias.payments.domain.entity;
 
+import com.github.sandokandias.payments.domain.command.AuthorizePayment;
 import com.github.sandokandias.payments.domain.command.PerformPayment;
+import com.github.sandokandias.payments.domain.entity.handler.AuthorizePaymentHandler;
 import com.github.sandokandias.payments.domain.entity.handler.PerformPaymentHandler;
 import com.github.sandokandias.payments.domain.shared.AggregateRoot;
 import com.github.sandokandias.payments.domain.vo.PaymentId;
@@ -26,6 +28,7 @@ public class Payment extends AggregateRoot<Payment, PaymentId> {
     protected AggregateRootBehavior initialBehavior() {
         AggregateRootBehaviorBuilder behaviorBuilder = new AggregateRootBehaviorBuilder();
         behaviorBuilder.setCommandHandler(PerformPayment.class, getHandler(PerformPaymentHandler.class));
+        behaviorBuilder.setCommandHandler(AuthorizePayment.class, getHandler(AuthorizePaymentHandler.class));
         return behaviorBuilder.build();
     }
 }

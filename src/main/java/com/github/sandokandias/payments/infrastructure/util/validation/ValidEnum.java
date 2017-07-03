@@ -9,7 +9,7 @@ import java.lang.annotation.*;
 @Target({ElementType.METHOD, ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ValidEnum {
-    String message() default "Invalid enum value.";
+    String message() default "invalid.enum";
 
     Class<?>[] groups() default {};
 
