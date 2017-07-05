@@ -47,7 +47,7 @@ public class PerformPaymentHandler implements
                             command.intent,
                             command.paymentMethod,
                             command.transaction,
-                            LocalDateTime.now()
+                            command.createdAt
                     );
                     CompletionStage<PaymentEventId> storePromise = paymentEventRepository.store(event);
                     return storePromise.thenApply(paymentEventId -> Either.right(event));

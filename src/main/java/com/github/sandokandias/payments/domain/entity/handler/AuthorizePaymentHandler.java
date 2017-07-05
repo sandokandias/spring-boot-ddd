@@ -46,7 +46,7 @@ public class AuthorizePaymentHandler implements CommandHandler<AuthorizePayment,
                             command.customerId,
                             command.paymentMethod,
                             command.transaction,
-                            LocalDateTime.now()
+                            command.createdAt
                     );
                     CompletionStage<PaymentEventId> storePromise = paymentEventRepository.store(event);
                     return storePromise.thenApply(paymentEventId -> Either.right(event));

@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
+import java.util.concurrent.Callable;
 import java.util.concurrent.CompletionStage;
 
 @RestController("/v1/payments")
@@ -31,21 +33,27 @@ public class PaymentController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public CompletionStage<ResponseEntity<?>> process(@Valid @RequestBody PerformPaymentRequest request) {
+    public Callable<CompletionStage<ResponseEntity<?>>> process(@Valid @RequestBody PerformPaymentRequest request) {
 
-        LOG.debug("Request  {}", request);
+        LOG.debug("Request {}", request);
 
-        PerformPayment performPayment = new PerformPayment(
-                new CustomerId(request.getCustomerId()),
-                PaymentIntent.valueOf(request.getIntent()),
-                PaymentMethod.valueOf(request.getPaymentMethod()),
-                request.getTransaction());
+        return () -> {
+            LOG.debug("Callable...");
 
-        CompletionStage<Either<CommandFailure, Tuple2<PaymentId, PaymentStatus>>> promise = paymentProcessManager.process(performPayment);
-        return promise.thenApply(acceptOrReject -> acceptOrReject.fold(
-                reject -> ResponseEntity.badRequest().body(reject),
-                result -> ResponseEntity.accepted().body(new PerformPaymentResponse(result._1.id, result._2.name()))
-        ));
+            PerformPayment performPayment = new PerformPayment(
+                    new CustomerId(request.getCustomerId()),
+                    PaymentIntent.valueOf(request.getIntent()),
+                    PaymentMethod.valueOf(request.getPaymentMethod()),
+                    request.getTransaction(),
+                    LocalDateTime.now());
+
+            CompletionStage<Either<CommandFailure, Tuple2<PaymentId, PaymentStatus>>> promise = paymentProcessManager.process(performPayment);
+            return promise.thenApply(acceptOrReject -> acceptOrReject.fold(
+                    reject -> ResponseEntity.badRequest().body(reject),
+                    accept -> ResponseEntity.accepted().body(new PerformPaymentResponse(accept._1.id, accept._2.name()))
+            ));
+        };
+
 
     }
 }

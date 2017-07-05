@@ -14,7 +14,7 @@ public abstract class AggregateRoot<E, ID> implements Entity<E> {
     private final ApplicationContext applicationContext;
     private AggregateRootBehavior behavior;
 
-    protected AggregateRoot(ID entityId, ApplicationContext applicationContext) {
+    protected AggregateRoot(ApplicationContext applicationContext, ID entityId) {
         this.entityId = entityId;
         this.applicationContext = applicationContext;
         this.behavior = initialBehavior();

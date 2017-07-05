@@ -2,7 +2,9 @@ package com.github.sandokandias.payments;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.config.annotation.AsyncSupportConfigurer;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
@@ -33,5 +35,22 @@ public class AppConfig extends WebMvcConfigurerAdapter {
         registry.addInterceptor(localeChangeInterceptor());
     }
 
+    @Override
+    public void configureAsyncSupport(AsyncSupportConfigurer configurer) {
+        configurer.setTaskExecutor(executorContext());
+    }
 
+    @Bean
+    public ThreadPoolTaskExecutor executorContext() {
+        ThreadPoolTaskExecutor t = new ThreadPoolTaskExecutor();
+        //TODO put configs on the properties
+        //TODO to define a equation for pool size
+        t.setCorePoolSize(1000);
+        t.setMaxPoolSize(1000);
+        t.setQueueCapacity(10000);
+        t.setAllowCoreThreadTimeOut(true);
+        t.setKeepAliveSeconds(120);
+        t.initialize();
+        return t;
+    }
 }
