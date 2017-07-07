@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.time.LocalDateTime;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletionStage;
 
@@ -40,12 +39,11 @@ public class PaymentController {
         return () -> {
             LOG.debug("Callable...");
 
-            PerformPayment performPayment = new PerformPayment(
+            PerformPayment performPayment = PerformPayment.commandOf(
                     new CustomerId(request.getCustomerId()),
-                    PaymentIntent.valueOf(request.getIntent()),
+                    PaymentIntent.valueOf(request.getPaymentIntent()),
                     PaymentMethod.valueOf(request.getPaymentMethod()),
-                    request.getTransaction(),
-                    LocalDateTime.now());
+                    request.getTransaction());
 
             CompletionStage<Either<CommandFailure, Tuple2<PaymentId, PaymentStatus>>> promise = paymentProcessManager.process(performPayment);
             return promise.thenApply(acceptOrReject -> acceptOrReject.fold(

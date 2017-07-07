@@ -16,6 +16,7 @@
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-web:1.5.2.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-data-jpa:1.5.2.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-undertow:1.5.2.RELEASE" level="project" />
+    <orderEntry type="library" name="Gradle: org.springframework.cloud:spring-cloud-starter-hystrix:1.2.5.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: mysql:mysql-connector-java:5.1.41" level="project" />
     <orderEntry type="library" name="Gradle: io.vavr:vavr:0.9.0" level="project" />
     <orderEntry type="library" name="Gradle: org.projectlombok:lombok:1.16.4" level="project" />
@@ -37,6 +38,12 @@
     <orderEntry type="library" name="Gradle: io.undertow:undertow-websockets-jsr:1.4.11.Final" level="project" />
     <orderEntry type="library" name="Gradle: javax.servlet:javax.servlet-api:3.1.0" level="project" />
     <orderEntry type="library" name="Gradle: org.glassfish:javax.el:3.0.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.springframework.cloud:spring-cloud-starter:1.1.7.RELEASE" level="project" />
+    <orderEntry type="library" name="Gradle: org.springframework.cloud:spring-cloud-netflix-core:1.2.5.RELEASE" level="project" />
+    <orderEntry type="library" name="Gradle: org.springframework.cloud:spring-cloud-starter-archaius:1.2.5.RELEASE" level="project" />
+    <orderEntry type="library" name="Gradle: com.netflix.hystrix:hystrix-core:1.5.6" level="project" />
+    <orderEntry type="library" name="Gradle: com.netflix.hystrix:hystrix-metrics-event-stream:1.5.6" level="project" />
+    <orderEntry type="library" name="Gradle: com.netflix.hystrix:hystrix-javanica:1.5.6" level="project" />
     <orderEntry type="library" name="Gradle: io.vavr:vavr-match:0.9.0" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot:1.5.2.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-autoconfigure:1.5.2.RELEASE" level="project" />
@@ -67,10 +74,29 @@
     <orderEntry type="library" name="Gradle: org.jboss.xnio:xnio-nio:3.3.6.Final" level="project" />
     <orderEntry type="library" name="Gradle: org.jboss.spec.javax.annotation:jboss-annotations-api_1.2_spec:1.0.0.Final" level="project" />
     <orderEntry type="library" name="Gradle: org.jboss.spec.javax.websocket:jboss-websocket-api_1.1_spec:1.1.0.Final" level="project" />
+    <orderEntry type="library" name="Gradle: org.springframework.cloud:spring-cloud-context:1.1.7.RELEASE" level="project" />
+    <orderEntry type="library" name="Gradle: org.springframework.cloud:spring-cloud-commons:1.1.7.RELEASE" level="project" />
+    <orderEntry type="library" name="Gradle: org.springframework.security:spring-security-rsa:1.0.3.RELEASE" level="project" />
+    <orderEntry type="library" name="Gradle: com.netflix.archaius:archaius-core:0.7.4" level="project" />
+    <orderEntry type="library" name="Gradle: commons-configuration:commons-configuration:1.8" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.guava:guava:18.0" level="project" />
+    <orderEntry type="library" name="Gradle: io.reactivex:rxjava:1.1.10" level="project" />
+    <orderEntry type="library" name="Gradle: org.hdrhistogram:HdrHistogram:2.1.9" level="project" />
+    <orderEntry type="library" name="Gradle: com.netflix.hystrix:hystrix-serialization:1.5.6" level="project" />
+    <orderEntry type="library" name="Gradle: commons-collections:commons-collections:3.2.2" level="project" />
+    <orderEntry type="library" name="Gradle: org.apache.commons:commons-lang3:3.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.ow2.asm:asm:5.0.4" level="project" />
     <orderEntry type="library" name="Gradle: ch.qos.logback:logback-classic:1.1.11" level="project" />
     <orderEntry type="library" name="Gradle: org.slf4j:jul-to-slf4j:1.7.24" level="project" />
     <orderEntry type="library" name="Gradle: org.slf4j:log4j-over-slf4j:1.7.24" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.tomcat:tomcat-juli:8.5.11" level="project" />
+    <orderEntry type="library" name="Gradle: org.springframework.security:spring-security-crypto:4.2.2.RELEASE" level="project" />
+    <orderEntry type="library" name="Gradle: org.bouncycastle:bcpkix-jdk15on:1.55" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.code.findbugs:jsr305:3.0.1" level="project" />
+    <orderEntry type="library" name="Gradle: commons-lang:commons-lang:2.6" level="project" />
+    <orderEntry type="library" name="Gradle: com.fasterxml.jackson.module:jackson-module-afterburner:2.8.7" level="project" />
+    <orderEntry type="library" name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:2.8.7" level="project" />
     <orderEntry type="library" name="Gradle: ch.qos.logback:logback-core:1.1.11" level="project" />
+    <orderEntry type="library" name="Gradle: org.bouncycastle:bcprov-jdk15on:1.55" level="project" />
   </component>
 </module>

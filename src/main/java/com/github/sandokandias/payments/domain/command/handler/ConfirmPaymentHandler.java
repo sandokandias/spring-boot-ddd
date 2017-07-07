@@ -1,4 +1,4 @@
-package com.github.sandokandias.payments.domain.entity.handler;
+package com.github.sandokandias.payments.domain.command.handler;
 
 import com.github.sandokandias.payments.domain.command.ConfirmPayment;
 import com.github.sandokandias.payments.domain.entity.PaymentEventRepository;
@@ -12,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
 import java.util.concurrent.CompletionStage;
 
 @Component
@@ -32,11 +31,10 @@ public class ConfirmPaymentHandler implements CommandHandler<ConfirmPayment, Pay
 
         LOG.debug("Handle command {}", command);
 
-        PaymentConfirmed event = new PaymentConfirmed(
-                new PaymentEventId(),
+        PaymentConfirmed event = PaymentConfirmed.eventOf(
                 entityId,
-                command.customerId,
-                command.createdAt
+                command.getCustomerId(),
+                command.getTimestamp()
         );
         CompletionStage<PaymentEventId> storePromise = paymentEventRepository.store(event);
         return storePromise.thenApply(paymentEventId -> Either.right(event));

@@ -3,12 +3,13 @@ package com.github.sandokandias.payments.domain.shared;
 import io.vavr.control.Either;
 import org.springframework.context.ApplicationContext;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletionStage;
 
-public abstract class AggregateRoot<E, ID> implements Entity<E> {
+public abstract class AggregateRoot<E, ID extends Serializable> implements Entity<E, ID> {
 
     public final ID entityId;
     private final ApplicationContext applicationContext;

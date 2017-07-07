@@ -1,9 +1,11 @@
 package com.github.sandokandias.payments.domain.shared;
 
+import java.io.Serializable;
+
 /**
  * An entity, as explained in the DDD book.
  */
-public interface Entity<E> {
+public interface Entity<E, ID extends Serializable> {
 
     /**
      * Entities compare by identity, not by attributes.
@@ -12,4 +14,6 @@ public interface Entity<E> {
      * @return true if the identities are the same, regardles of other attributes.
      */
     boolean sameIdentityAs(E other);
+
+    ID id();
 }

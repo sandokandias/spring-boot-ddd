@@ -14,7 +14,7 @@ public class PerformPaymentRequest {
     @NotNull
     private String customerId;
     @ValidEnum(conformsTo = PaymentIntent.class)
-    private String intent;
+    private String paymentIntent;
     @ValidEnum(conformsTo = PaymentMethod.class)
     private String paymentMethod;
     @Valid

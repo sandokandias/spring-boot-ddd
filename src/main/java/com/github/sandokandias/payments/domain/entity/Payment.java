@@ -3,9 +3,9 @@ package com.github.sandokandias.payments.domain.entity;
 import com.github.sandokandias.payments.domain.command.AuthorizePayment;
 import com.github.sandokandias.payments.domain.command.ConfirmPayment;
 import com.github.sandokandias.payments.domain.command.PerformPayment;
-import com.github.sandokandias.payments.domain.entity.handler.AuthorizePaymentHandler;
-import com.github.sandokandias.payments.domain.entity.handler.ConfirmPaymentHandler;
-import com.github.sandokandias.payments.domain.entity.handler.PerformPaymentHandler;
+import com.github.sandokandias.payments.domain.command.handler.AuthorizePaymentHandler;
+import com.github.sandokandias.payments.domain.command.handler.ConfirmPaymentHandler;
+import com.github.sandokandias.payments.domain.command.handler.PerformPaymentHandler;
 import com.github.sandokandias.payments.domain.shared.AggregateRoot;
 import com.github.sandokandias.payments.domain.vo.PaymentId;
 import org.springframework.context.ApplicationContext;
@@ -23,6 +23,11 @@ public class Payment extends AggregateRoot<Payment, PaymentId> {
     @Override
     public boolean sameIdentityAs(Payment other) {
         return other != null && entityId.sameValueAs(other.entityId);
+    }
+
+    @Override
+    public PaymentId id() {
+        return entityId;
     }
 
     @Override

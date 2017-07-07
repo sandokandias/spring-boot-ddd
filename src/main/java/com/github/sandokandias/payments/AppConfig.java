@@ -40,14 +40,15 @@ public class AppConfig extends WebMvcConfigurerAdapter {
         configurer.setTaskExecutor(executorContext());
     }
 
+
     @Bean
     public ThreadPoolTaskExecutor executorContext() {
         ThreadPoolTaskExecutor t = new ThreadPoolTaskExecutor();
         //TODO put configs on the properties
-        //TODO to define a equation for pool size
-        t.setCorePoolSize(1000);
-        t.setMaxPoolSize(1000);
-        t.setQueueCapacity(10000);
+        //TODO define an equation for pool size
+        t.setCorePoolSize(100);
+        t.setMaxPoolSize(100);
+        t.setQueueCapacity(1000);
         t.setAllowCoreThreadTimeOut(true);
         t.setKeepAliveSeconds(120);
         t.initialize();

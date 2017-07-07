@@ -6,7 +6,6 @@ import javax.validation.constraints.Size;
 import java.util.UUID;
 
 public abstract class RandomUUID implements ValueObject<RandomUUID> {
-
     @NotNull
     @Size(min = 16, max = 50)
     public final String id;

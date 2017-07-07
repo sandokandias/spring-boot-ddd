@@ -4,6 +4,7 @@ version '1.0-SNAPSHOT'
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
 apply plugin: 'io.franzbecker.gradle-lombok'
 
 sourceCompatibility = 1.8
@@ -11,6 +12,12 @@ targetCompatibility = 1.8
 
 repositories {
     mavenCentral()
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:Camden.SR5"
+    }
 }
 
 dependencies {
@@ -23,20 +30,27 @@ dependencies {
     }
     compile 'org.springframework.boot:spring-boot-starter-data-jpa'
     compile 'org.springframework.boot:spring-boot-starter-undertow'
+    compile 'org.springframework.cloud:spring-cloud-starter-hystrix'
     compile 'mysql:mysql-connector-java'
     compile 'io.vavr:vavr:0.9.0'
     testCompile 'junit:junit:4.12'
 }
 
 buildscript {
+    ext {
+        springBootVersion = '1.5.2.RELEASE'
+    }
+
     repositories {
         maven {
             url "https://plugins.gradle.org/m2/"
         }
+        mavenCentral()
     }
+
     dependencies {
         classpath "io.franzbecker:gradle-lombok:1.8"
-        classpath "org.springframework.boot:spring-boot-gradle-plugin:1.5.2.RELEASE"
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
     }
 }
 

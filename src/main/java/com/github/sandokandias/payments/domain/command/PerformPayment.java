@@ -4,15 +4,15 @@ import com.github.sandokandias.payments.domain.vo.CustomerId;
 import com.github.sandokandias.payments.domain.vo.PaymentIntent;
 import com.github.sandokandias.payments.domain.vo.PaymentMethod;
 import com.github.sandokandias.payments.domain.vo.Transaction;
-import lombok.AllArgsConstructor;
+import lombok.Value;
 
 import java.time.LocalDateTime;
 
-@AllArgsConstructor
+@Value(staticConstructor = "commandOf")
 public class PerformPayment implements PaymentCommand {
-    public final CustomerId customerId;
-    public final PaymentIntent intent;
-    public final PaymentMethod paymentMethod;
-    public final Transaction transaction;
-    public final LocalDateTime createdAt;
+    private final CustomerId customerId;
+    private final PaymentIntent paymentIntent;
+    private final PaymentMethod paymentMethod;
+    private final Transaction transaction;
+    private final LocalDateTime timestamp = LocalDateTime.now();
 }

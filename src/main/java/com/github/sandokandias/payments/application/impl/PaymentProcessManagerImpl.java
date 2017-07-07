@@ -7,10 +7,13 @@ import com.github.sandokandias.payments.domain.command.PerformPayment;
 import com.github.sandokandias.payments.domain.entity.Payment;
 import com.github.sandokandias.payments.domain.event.PaymentAuthorized;
 import com.github.sandokandias.payments.domain.event.PaymentConfirmed;
+import com.github.sandokandias.payments.domain.event.PaymentEvent;
 import com.github.sandokandias.payments.domain.event.PaymentRequested;
 import com.github.sandokandias.payments.domain.shared.CommandFailure;
 import com.github.sandokandias.payments.domain.vo.PaymentId;
 import com.github.sandokandias.payments.domain.vo.PaymentStatus;
+import com.github.sandokandias.payments.infrastructure.util.i18n.I18nCode;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import io.vavr.Tuple;
 import io.vavr.Tuple2;
 import io.vavr.control.Either;
@@ -21,12 +24,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 
 import static io.vavr.control.Either.left;
 import static io.vavr.control.Either.right;
+import static java.util.concurrent.CompletableFuture.completedFuture;
 
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @Service
@@ -40,6 +44,8 @@ class PaymentProcessManagerImpl implements PaymentProcessManager {
         this.applicationContext = applicationContext;
     }
 
+
+    @HystrixCommand(fallbackMethod = "fallback")
     @Override
     public CompletionStage<Either<CommandFailure, Tuple2<PaymentId, PaymentStatus>>> process(PerformPayment performPayment) {
 
@@ -48,46 +54,53 @@ class PaymentProcessManagerImpl implements PaymentProcessManager {
         Payment payment = new Payment(applicationContext);
         CompletionStage<Either<CommandFailure, PaymentRequested>> performPaymentPromise = payment.handle(performPayment);
         return performPaymentPromise.thenCompose(paymentRequested -> paymentRequested.fold(
-                rejectPayment -> CompletableFuture.completedFuture(left(rejectPayment)),
-                acceptPayment -> {
-                    AuthorizePayment authorizePayment = createAuthorizePayment(acceptPayment);
-                    CompletionStage<Either<CommandFailure, PaymentAuthorized>> authorizePaymentPromise = payment.handle(authorizePayment);
-                    return authorizePaymentPromise.thenCompose(paymentAuthorized -> paymentAuthorized.fold(
-                            rejectAuthorization -> CompletableFuture.completedFuture(left(rejectAuthorization)),
-                            acceptAuthorization -> {
-                                if (acceptPayment.intent.isAuthorize()) {
-                                    return CompletableFuture.completedFuture(right(Tuple.of(acceptAuthorization.paymentId, PaymentStatus.AUTHORIZED)));
-                                } else {
-                                    ConfirmPayment confirmPayment = createConfirmPayment(acceptAuthorization);
-                                    CompletionStage<Either<CommandFailure, PaymentConfirmed>> confirmPaymentPromise = payment.handle(confirmPayment);
-                                    return confirmPaymentPromise.thenApply(paymentConfirmed -> paymentConfirmed.fold(
-                                            rejectConfirmation -> left(rejectConfirmation),
-                                            acceptConfirmation -> right(Tuple.of(acceptPayment.paymentId, PaymentStatus.CAPTURED))
-                                    ));
-                                }
-
+                rejectPayment -> completed(rejectPayment),
+                acceptPayment -> authorize(payment, acceptPayment).thenCompose(paymentAuthorized -> paymentAuthorized.fold(
+                        rejectAuthorization -> completed(rejectAuthorization),
+                        acceptAuthorization -> {
+                            if (acceptPayment.getPaymentIntent().isAuthorize()) {
+                                return completed(acceptAuthorization, PaymentStatus.AUTHORIZED);
+                            } else {
+                                return confirm(payment, acceptPayment, acceptAuthorization);
                             }
-                    ));
-                }
+                        }
+                ))
         ));
-
     }
 
-    private ConfirmPayment createConfirmPayment(PaymentAuthorized acceptAuthorization) {
-        return new ConfirmPayment(
-                acceptAuthorization.paymentId,
-                acceptAuthorization.customerId,
-                LocalDateTime.now()
-        );
+    public CompletionStage<Either<CommandFailure, Tuple2<PaymentId, PaymentStatus>>> fallback(PerformPayment performPayment) {
+        return completed(new CommandFailure(new HashSet<I18nCode>() {{
+            add(new I18nCode("SERVICE_UNAVAILABLE"));
+        }}));
     }
 
-    private AuthorizePayment createAuthorizePayment(PaymentRequested acceptPayment) {
-        return new AuthorizePayment(
-                acceptPayment.paymentId,
-                acceptPayment.customerId,
-                acceptPayment.paymentMethod,
-                acceptPayment.transaction,
-                LocalDateTime.now()
+    private CompletableFuture<Either<CommandFailure, Tuple2<PaymentId, PaymentStatus>>> completed(CommandFailure rejectAuthorization) {
+        return completedFuture(left(rejectAuthorization));
+    }
+
+    private CompletableFuture<Either<CommandFailure, Tuple2<PaymentId, PaymentStatus>>> completed(PaymentEvent paymentEvent, PaymentStatus paymentStatus) {
+        return completedFuture(right(Tuple.of(paymentEvent.getPaymentId(), paymentStatus)));
+    }
+
+    private CompletionStage<Either<CommandFailure, Tuple2<PaymentId, PaymentStatus>>> confirm(Payment payment, PaymentRequested acceptPayment, PaymentAuthorized acceptAuthorization) {
+        ConfirmPayment confirmPayment = ConfirmPayment.commandOf(
+                acceptAuthorization.getPaymentId(),
+                acceptAuthorization.getCustomerId()
         );
+        CompletionStage<Either<CommandFailure, PaymentConfirmed>> confirmPaymentPromise = payment.handle(confirmPayment);
+        return confirmPaymentPromise.thenApply(paymentConfirmed -> paymentConfirmed.fold(
+                rejectConfirmation -> left(rejectConfirmation),
+                acceptConfirmation -> right(Tuple.of(acceptPayment.getPaymentId(), PaymentStatus.CAPTURED))
+        ));
+    }
+
+    private CompletionStage<Either<CommandFailure, PaymentAuthorized>> authorize(Payment payment, PaymentRequested acceptPayment) {
+        AuthorizePayment authorizePayment = AuthorizePayment.commandOf(
+                acceptPayment.getPaymentId(),
+                acceptPayment.getCustomerId(),
+                acceptPayment.getPaymentMethod(),
+                acceptPayment.getTransaction()
+        );
+        return payment.handle(authorizePayment);
     }
 }

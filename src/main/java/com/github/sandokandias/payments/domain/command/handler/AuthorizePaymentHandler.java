@@ -1,4 +1,4 @@
-package com.github.sandokandias.payments.domain.entity.handler;
+package com.github.sandokandias.payments.domain.command.handler;
 
 import com.github.sandokandias.payments.domain.command.AuthorizePayment;
 import com.github.sandokandias.payments.domain.command.validation.AuthorizePaymentValidator;
@@ -13,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 
@@ -40,13 +39,12 @@ public class AuthorizePaymentHandler implements CommandHandler<AuthorizePayment,
         return authorizePaymentValidator.acceptOrReject(command).fold(
                 reject -> CompletableFuture.completedFuture(Either.left(reject)),
                 accept -> {
-                    PaymentAuthorized event = new PaymentAuthorized(
-                            new PaymentEventId(),
+                    PaymentAuthorized event = PaymentAuthorized.eventOf(
                             entityId,
-                            command.customerId,
-                            command.paymentMethod,
-                            command.transaction,
-                            command.createdAt
+                            command.getCustomerId(),
+                            command.getPaymentMethod(),
+                            command.getTransaction(),
+                            command.getTimestamp()
                     );
                     CompletionStage<PaymentEventId> storePromise = paymentEventRepository.store(event);
                     return storePromise.thenApply(paymentEventId -> Either.right(event));

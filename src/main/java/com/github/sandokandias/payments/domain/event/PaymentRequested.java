@@ -1,17 +1,27 @@
 package com.github.sandokandias.payments.domain.event;
 
 import com.github.sandokandias.payments.domain.vo.*;
-import lombok.AllArgsConstructor;
+import lombok.Value;
 
 import java.time.LocalDateTime;
 
-@AllArgsConstructor
+@Value(staticConstructor = "eventOf")
 public class PaymentRequested implements PaymentEvent {
-    public final PaymentEventId paymentEventId;
-    public final PaymentId paymentId;
-    public final CustomerId customerId;
-    public final PaymentIntent intent;
-    public final PaymentMethod paymentMethod;
-    public final Transaction transaction;
-    public final LocalDateTime createdAt;
+    private final PaymentEventId eventId = new PaymentEventId();
+    private final PaymentId paymentId;
+    private final CustomerId customerId;
+    private final PaymentIntent paymentIntent;
+    private final PaymentMethod paymentMethod;
+    private final Transaction transaction;
+    private final LocalDateTime timestamp;
+
+    @Override
+    public PaymentEventType getEventType() {
+        return PaymentEventType.PAYMENT_REQUESTED;
+    }
+
+    @Override
+    public LocalDateTime getTimestamp() {
+        return timestamp;
+    }
 }

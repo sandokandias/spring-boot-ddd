@@ -1,4 +1,4 @@
-package com.github.sandokandias.payments.domain.entity.handler;
+package com.github.sandokandias.payments.domain.command.handler;
 
 import com.github.sandokandias.payments.domain.command.PerformPayment;
 import com.github.sandokandias.payments.domain.command.validation.PerformPaymentValidator;
@@ -13,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 
@@ -40,14 +39,13 @@ public class PerformPaymentHandler implements
         return performPaymentValidator.acceptOrReject(command).fold(
                 reject -> CompletableFuture.completedFuture(Either.left(reject)),
                 accept -> {
-                    PaymentRequested event = new PaymentRequested(
-                            new PaymentEventId(),
+                    PaymentRequested event = PaymentRequested.eventOf(
                             entityId,
-                            command.customerId,
-                            command.intent,
-                            command.paymentMethod,
-                            command.transaction,
-                            command.createdAt
+                            command.getCustomerId(),
+                            command.getPaymentIntent(),
+                            command.getPaymentMethod(),
+                            command.getTransaction(),
+                            command.getTimestamp()
                     );
                     CompletionStage<PaymentEventId> storePromise = paymentEventRepository.store(event);
                     return storePromise.thenApply(paymentEventId -> Either.right(event));
