@@ -21,18 +21,18 @@ dependencyManagement {
 }
 
 dependencies {
+    compile 'io.vavr:vavr:0.9.0'
+    compile 'javax.validation:validation-api:1.1.0.Final'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.8.9'
     compile 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.8.9'
     compile 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.8.9'
-    compile 'javax.validation:validation-api:1.1.0.Final'
     compile('org.springframework.boot:spring-boot-starter-web') {
         exclude module: 'spring-boot-starter-tomcat'
     }
-    compile 'org.springframework.boot:spring-boot-starter-data-jpa'
     compile 'org.springframework.boot:spring-boot-starter-undertow'
     compile 'org.springframework.cloud:spring-cloud-starter-hystrix'
-    compile 'mysql:mysql-connector-java'
-    compile 'io.vavr:vavr:0.9.0'
+    compile "org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.0.Final"
+    compile 'org.springframework.data:spring-data-cassandra'
     testCompile 'junit:junit:4.12'
 }
 
@@ -54,3 +54,10 @@ buildscript {
     }
 }
 
+def profile = System.getProperty("profile")
+
+apply from: "profile-${profile}.gradle"
+
+bootRun {
+    args = ["--spring.profiles.active=" + profile]
+}
