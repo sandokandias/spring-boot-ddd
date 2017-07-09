@@ -31,8 +31,8 @@ dependencies {
     }
     compile 'org.springframework.boot:spring-boot-starter-undertow'
     compile 'org.springframework.cloud:spring-cloud-starter-hystrix'
-    compile "org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.0.Final"
-    compile 'org.springframework.data:spring-data-cassandra'
+    compileOnly "org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.0.Final"
+    compileOnly 'org.springframework.data:spring-data-cassandra'
     testCompile 'junit:junit:4.12'
 }
 

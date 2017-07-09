@@ -17,7 +17,6 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.data.cassandra.config.SchemaAction;
 import org.springframework.data.cassandra.config.java.AbstractCassandraConfiguration;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
-import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.AsyncSupportConfigurer;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -64,12 +63,8 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 
         @Override
         protected AuthProvider getAuthProvider() {
-            if (StringUtils.hasText(this.cassandraProperties.getUsername())) {
-                return new PlainTextAuthProvider(this.cassandraProperties.getUsername(),
-                        this.cassandraProperties.getPassword());
-            } else {
-                return null;
-            }
+            return new PlainTextAuthProvider(this.cassandraProperties.getUsername(),
+                    this.cassandraProperties.getPassword());
         }
 
         @Override
@@ -96,6 +91,7 @@ public class AppConfig extends WebMvcConfigurerAdapter {
         }
     }
 
+
     @Bean
     public LocaleResolver localeResolver() {
         SessionLocaleResolver slr = new SessionLocaleResolver();
@@ -118,17 +114,17 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void configureAsyncSupport(AsyncSupportConfigurer configurer) {
-        configurer.setTaskExecutor(executorContext());
+        configurer.setTaskExecutor(appExecutor());
     }
 
 
     @Bean
-    public ThreadPoolTaskExecutor executorContext() {
+    public ThreadPoolTaskExecutor appExecutor() {
         ThreadPoolTaskExecutor t = new ThreadPoolTaskExecutor();
         //TODO put configs on the properties
         //TODO define an equation for pool size
-        t.setCorePoolSize(100);
-        t.setMaxPoolSize(100);
+        t.setCorePoolSize(350);
+        t.setMaxPoolSize(350);
         t.setQueueCapacity(1000);
         t.setAllowCoreThreadTimeOut(true);
         t.setKeepAliveSeconds(120);

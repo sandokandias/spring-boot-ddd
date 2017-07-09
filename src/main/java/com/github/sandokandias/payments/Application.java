@@ -8,12 +8,10 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 
 @EnableCircuitBreaker
-
 @Import(EmbeddedServletContainerAutoConfiguration.class)
 @SpringBootApplication
 @ComponentScan
 public class Application {
-
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
