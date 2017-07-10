@@ -1,0 +1,18 @@
+version: '2'
+
+services:
+   mysql:
+     image: mysql:5.7
+     ports: 
+        - 3306:3306
+     volumes:
+       - mysql_data:/var/lib/mysql
+     restart: always
+     environment:
+       MYSQL_ROOT_PASSWORD: ddd_springboot
+       MYSQL_DATABASE: ddd_springboot
+       MYSQL_USER: ddd_springboot
+       MYSQL_PASSWORD: ddd_springboot
+
+volumes:
+    mysql_data:

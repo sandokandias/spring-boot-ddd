@@ -13,7 +13,7 @@ import com.github.sandokandias.payments.domain.shared.CommandFailure;
 import com.github.sandokandias.payments.domain.vo.PaymentId;
 import com.github.sandokandias.payments.domain.vo.PaymentStatus;
 import com.github.sandokandias.payments.infrastructure.util.i18n.I18nCode;
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+//import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import io.vavr.Tuple;
 import io.vavr.Tuple2;
 import io.vavr.control.Either;
@@ -45,7 +45,7 @@ class PaymentProcessManagerImpl implements PaymentProcessManager {
     }
 
 
-    @HystrixCommand(fallbackMethod = "fallback")
+    //@HystrixCommand(fallbackMethod = "fallback")
     @Override
     public CompletionStage<Either<CommandFailure, Tuple2<PaymentId, PaymentStatus>>> process(PerformPayment performPayment) {
 
