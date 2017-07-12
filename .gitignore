@@ -33,3 +33,5 @@ gradle-app.setting
 
 # IntelliJ
 /out/
+.idea
+*.iml
