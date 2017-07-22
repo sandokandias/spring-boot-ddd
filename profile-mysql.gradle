@@ -1,0 +1,4 @@
+dependencies {
+    compile 'org.springframework.boot:spring-boot-starter-data-jpa'
+    compile group: 'mysql', name: 'mysql-connector-java', version: '6.0.6'
+}
