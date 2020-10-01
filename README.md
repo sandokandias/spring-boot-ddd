@@ -1,4 +1,4 @@
-Spring boot application with domain driven design example.
+Awesome Spring Boot app with domain driven design(DDD).
 
 ## Layers
 
@@ -21,7 +21,7 @@ Implementation example: Payment (AggregateRoot)
 This layer acts as a supporting library for all the other layers. </br>
 e.g.: SQL Tables representation, SQL Repositories implementation, i18n, serialization, validators,  etc. </br>
 Implementation example:
-* persistence package
+* Persistence package
 * i18n package
-* serialization package
-* validation package
+* Serialization package
+* Validation package
